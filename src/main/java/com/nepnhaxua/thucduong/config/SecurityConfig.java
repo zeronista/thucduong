@@ -23,16 +23,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .cors(Customizer.withDefaults())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/actuator/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/products/**", "/api/blog/**", "/api/health-map/**").permitAll()
-                    .anyRequest().permitAll() // TODO: tighten when JWT auth is added
-            );
+                .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        // Static resources
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**").permitAll()
+                        // Public pages
+                        .requestMatchers("/", "/products", "/products/**", "/blog", "/blog/**", "/about", "/login")
+                        .permitAll()
+                        // API documentation
+                        .requestMatchers("/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/actuator/**")
+                        .permitAll()
+                        // Public API endpoints
+                        .requestMatchers(HttpMethod.GET, "/api/products/**", "/api/blog/**", "/api/health-map/**")
+                        .permitAll()
+                        // Everything else requires authentication (will be updated when auth is
+                        // implemented)
+                        .anyRequest().permitAll() // TODO: tighten when JWT auth is added
+                );
         return http.build();
     }
 }
-
-

@@ -58,7 +58,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Bean
     public MongoClient mongoClient() {
         ConnectionString connectionString = new ConnectionString(mongoUri);
-        
+
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .applyToConnectionPoolSettings(settings -> settings
@@ -82,21 +82,21 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @NotNull
     @Bean
     public MongoTemplate mongoTemplate(@NotNull MongoDatabaseFactory mongoDbFactory,
-                                       @NotNull MappingMongoConverter converter) {
+            @NotNull MappingMongoConverter converter) {
         return new MongoTemplate(mongoDbFactory, converter);
     }
 
     @Bean
     public MappingMongoConverter mappingMongoConverter(MongoDatabaseFactory factory,
-                                                       MongoMappingContext context,
-                                                       MongoCustomConversions conversions) {
+            MongoMappingContext context,
+            MongoCustomConversions conversions) {
         DbRefResolver dbRefResolver = new DefaultDbRefResolver(factory);
         MappingMongoConverter mappingConverter = new MappingMongoConverter(dbRefResolver, context);
         mappingConverter.setCustomConversions(conversions);
-        
+
         // Don't save _class to mongo documents
         mappingConverter.setTypeMapper(new DefaultMongoTypeMapper(null));
-        
+
         return mappingConverter;
     }
 

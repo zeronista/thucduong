@@ -1,7 +1,7 @@
 spring:
   application:
     name: thucduong-ecommerce
-  
+
   # Data Configuration
   data:
     mongodb:
@@ -12,7 +12,7 @@ spring:
     redis:
       host: localhost
       port: 6379
-      password: 
+      password:
       timeout: 2000ms
       client-type: jedis
       jedis:
@@ -21,7 +21,7 @@ spring:
           max-idle: 8
           min-idle: 2
           max-wait: -1ms
-  
+
   # Cache Configuration
   cache:
     type: redis
@@ -29,15 +29,15 @@ spring:
       time-to-live: 3600000 # 1 hour default
       cache-null-values: false
       use-key-prefix: true
-      key-prefix: 'thucduong:'
-  
+      key-prefix: "thucduong:"
+
   # Security Configuration
   security:
     jwt:
       secret: ${JWT_SECRET:your-256-bit-secret-key-for-jwt-token-generation-change-in-production}
       expiration: 86400000 # 24 hours
       refresh-token-expiration: 604800000 # 7 days
-  
+
   # Mail Configuration
   mail:
     host: smtp.gmail.com
@@ -54,14 +54,14 @@ spring:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
-  
+
   # File Upload Configuration
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 25MB
       enabled: true
-  
+
   # Jackson Configuration
   jackson:
     serialization:
@@ -97,7 +97,7 @@ logging:
 app:
   name: Thực Dưỡng E-Commerce
   version: 1.0.0
-  
+
   # CORS Configuration
   cors:
     allowed-origins:
@@ -116,12 +116,12 @@ app:
       - X-Total-Count
     allow-credentials: true
     max-age: 3600
-  
+
   # Pagination defaults
   pagination:
     default-page-size: 20
     max-page-size: 100
-  
+
   # File storage
   storage:
     upload-dir: ./uploads
@@ -131,19 +131,19 @@ app:
     max-size:
       images: 5242880 # 5MB
       documents: 10485760 # 10MB
-  
+
   # Security settings
   security:
     password-encoder: bcrypt
     strength: 10
     remember-me-key: ${REMEMBER_ME_KEY:unique-and-secret-key}
-    
+
   # Rate limiting
   rate-limiting:
     enabled: true
     default-limit: 1000
     window-minutes: 15
-    
+
   # API Documentation
   api-docs:
     enabled: true

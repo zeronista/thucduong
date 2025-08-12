@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Trang chủ</title>
+</head>
+<body>
+    <th:block layout:fragment="styles">
+        <link rel="stylesheet" th:href="@{/css/homepage.css}">
+    </th:block>
+
+    <main layout:fragment="content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    KHỞI ĐẦU HÀNH TRÌNH<br>
+                    THỰC DƯỠNG CÙNG NẾP NHÀ XƯA
+                </h1>
+                <p class="hero-description">
+                    Khám phá bộ sưu tập thực phẩm thực dưỡng cao cấp, gạo lứt hữu cơ 
+                    bản lứt dinh dưỡng, trà thảo mộc thiên nhiên. Nâng cao chất lượng cuộc sống 
+                    với những sản phẩm an toàn, bổ dưỡng cho cả gia đình.
+                </p>
+                <p class="hero-stats">Ưu đãi đặc biệt cho khách hàng mới</p>
+                <div class="hero-offer">
+                    <div class="offer-item">
+                        <span class="offer-label">Giảm</span>
+                        <span class="offer-value">25%</span>
+                    </div>
+                    <div class="offer-item">
+                        <span class="offer-label">Cho</span>
+                        <span class="offer-value">50</span>
+                        <span class="offer-sublabel">đơn hàng đầu tiên</span>
+                    </div>
+                    <div class="offer-item">
+                        <span class="offer-label">Miễn phí ship</span>
+                        <span class="offer-value">0đ</span>
+                    </div>
+                </div>
+                <a href="#products" class="btn btn-primary hero-cta">Mua ngay</a>
+            </div>
+            <div class="hero-image">
+                <img th:src="@{/images/hero-vegetables.png}" alt="Rau củ thực dưỡng" class="hero-img">
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section">
+            <div class="container">
+                <h2 class="section-subtitle">Câu chuyện khởi nguồn</h2>
+                <h3 class="section-title">Hành trình lan tỏa triết lý thực dưỡng</h3>
+                <p class="about-description">
+                    Nếp Nhà Xưa ra đời từ niềm tin mãnh liệt rằng thực phẩm không chỉ là nguồn 
+                    năng lượng, mà còn là nền tảng của sức khỏe và hạnh phúc. Chúng tôi khát khao 
+                    tái hiện lại nếp ăn thuần khiết của ông bà xưa - ngày thuở sản phẩm còn được 
+                    trồng ấm ủng, giữ gìn cẩn thận và phát triển bằng vòng.
+                </p>
+                <p class="about-description">
+                    Với sứ mệnh mang đến những sản phẩm thực dưỡng chất lượng cao, chúng tôi 
+                    mỉ tựa chọn từng nguyên liệu, gạo lứt hữu cơ từ những cánh đồng xanh mướt, 
+                    bún lứt giữ nguyên dinh dưỡng tự nhiên với thảo mộc từ những vườn ươm sạch. 
+                    Mỗi sản phẩm đều mang trong mình câu chuyện về sự tận tâm trong từng 
+                    phần việc con người.
+                </p>
+                <p class="about-description">
+                    Hôm nay, Nếp Nhà Xưa không chỉ là thương hiệu thực phẩm, mà còn là cộng 
+                    đồng những người yêu thích sử dụng làm mạnh, cùng nhau chia sẻ kiến thức và 
+                    lan tỏa giá trị tích cực của lối sống dương đến mọi gia đình Việt Nam.
+                </p>
+                <a th:href="@{/about}" class="btn btn-secondary">Khám phá sản phẩm</a>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products-section">
+            <div class="container">
+                <h2 class="section-title text-center">Sản phẩm thực dưỡng</h2>
+                <p class="section-description text-center">
+                    Khám phá đa dạng sản phẩm thực dưỡng chất lượng cao, phù hợp với mọi nhu cầu dinh dưỡng của gia đình bạn
+                </p>
+                
+                <div class="product-grid">
+                    <div class="product-card" th:each="product : ${featuredProducts}">
+                        <a th:href="@{/products/{slug}(slug=${product.slug})}">
+                            <div class="product-image">
+                                <img th:src="${product.media?.images[0]?.url ?: '/images/product-placeholder.jpg'}" 
+                                     th:alt="${product.name}" 
+                                     class="lazy">
+                                <span class="product-badge" th:if="${product.pricing.sale != null}">
+                                    -<span th:text="${#numbers.formatDecimal((product.pricing.regular - product.pricing.sale) / product.pricing.regular * 100, 0, 0)}">%</span>
+                                </span>
+                            </div>
+                            <div class="product-info">
+                                <h4 class="product-name" th:text="${product.name}">Tên sản phẩm</h4>
+                                <div class="product-price">
+                                    <span class="price-current" th:text="${#numbers.formatDecimal(product.pricing.sale ?: product.pricing.regular, 0, 0, 'COMMA')} + ' đ'">0 đ</span>
+                                    <span class="price-original" th:if="${product.pricing.sale != null}" 
+                                          th:text="${#numbers.formatDecimal(product.pricing.regular, 0, 0, 'COMMA')} + ' đ'">0 đ</span>
+                                </div>
+                                <button class="add-to-cart" 
+                                        th:attr="data-product-id=${product.id},
+                                                data-product-name=${product.name},
+                                                data-product-price=${product.pricing.sale ?: product.pricing.regular}">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="9" cy="21" r="1"></circle>
+                                        <circle cx="20" cy="21" r="1"></circle>
+                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                    </svg>
+                                    Thêm vào giỏ
+                                </button>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-5">
+                    <a th:href="@{/products}" class="btn btn-primary">Xem tất cả sản phẩm</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Human Body Section -->
+        <section class="body-section">
+            <div class="container">
+                <div class="body-content">
+                    <div class="body-image">
+                        <img th:src="@{/images/human-body.png}" alt="Cơ thể con người" class="body-diagram">
+                        <div class="body-points">
+                            <button class="body-point" data-part="brain" style="top: 10%; left: 50%;">
+                                <span class="point-dot"></span>
+                                <span class="point-label">Brain</span>
+                            </button>
+                            <button class="body-point" data-part="heart" style="top: 35%; left: 45%;">
+                                <span class="point-dot"></span>
+                                <span class="point-label">Heart</span>
+                            </button>
+                            <button class="body-point" data-part="liver" style="top: 45%; left: 40%;">
+                                <span class="point-dot"></span>
+                                <span class="point-label">Liver</span>
+                            </button>
+                            <button class="body-point" data-part="stomach" style="top: 50%; left: 50%;">
+                                <span class="point-dot"></span>
+                                <span class="point-label">Stomach</span>
+                            </button>
+                            <button class="body-point" data-part="intestines" style="top: 60%; left: 50%;">
+                                <span class="point-dot"></span>
+                                <span class="point-label">Intestines</span>
+                            </button>
+                            <button class="body-point" data-part="kidney" style="top: 55%; left: 60%;">
+                                <span class="point-dot"></span>
+                                <span class="point-label">Kidney</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="body-info">
+                        <h3 class="body-title">HUMAN BODY</h3>
+                        <p class="body-description">
+                            Khám phá các sản phẩm thực dưỡng được thiết kế đặc biệt 
+                            cho từng bộ phận cơ thể. Click vào các điểm trên hình 
+                            để tìm hiểu thêm.
+                        </p>
+                        <div class="body-benefits" id="bodyBenefits">
+                            <!-- Dynamic content loaded by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section class="blog-section">
+            <div class="container">
+                <h2 class="section-title text-center">Tin tức mới nhất</h2>
+                <p class="section-description text-center">
+                    Các mẹo tin mới nhất về các vấn đề liên quan đến sức khỏe dinh dưỡng, 
+                    giúp bạn tìm hiểu và áp dụng những phương pháp nấu ăn lành mạnh
+                </p>
+                
+                <div class="blog-grid">
+                    <article class="blog-card">
+                        <div class="blog-image">
+                            <img th:src="@{/images/blog-1.jpg}" alt="Tìm Hiểu Về Gạo Lứt" class="lazy">
+                            <span class="blog-date">01/20/2025 1:44:33 PM</span>
+                        </div>
+                        <div class="blog-content">
+                            <h3 class="blog-title">Tìm Hiểu Về Gạo Lứt</h3>
+                            <p class="blog-excerpt">
+                                Dung 28 tướng cao lầm bạn phải tự sính 
+                                hường và. Với mới về màu đơn giản, bạn 
+                                vẫn có thể thưởng...
+                            </p>
+                            <a th:href="@{/blog/tim-hieu-ve-gao-lut}" class="blog-link">Đọc thêm →</a>
+                        </div>
+                    </article>
+
+                    <article class="blog-card">
+                        <div class="blog-image">
+                            <img th:src="@{/images/blog-2.jpg}" alt="Lợi ích của Xu hướng Ăn Uống Healthy" class="lazy">
+                            <span class="blog-date">01/20/2025 1:43:43 PM</span>
+                        </div>
+                        <div class="blog-content">
+                            <h3 class="blog-title">Lợi ích của Xu hướng Ăn Uống Healthy Năm 2025...</h3>
+                            <p class="blog-excerpt">
+                                Năm 2025, xu hướng ăn uống healthy 
+                                không chỉ là một lựa chọn, mà đã trở thành 
+                                lối sống của rất...
+                            </p>
+                            <a th:href="@{/blog/loi-ich-xu-huong-an-uong-healthy}" class="blog-link">Đọc thêm →</a>
+                        </div>
+                    </article>
+
+                    <article class="blog-card">
+                        <div class="blog-image">
+                            <img th:src="@{/images/blog-3.jpg}" alt="Top 5 sai lầm khi bắt đầu" class="lazy">
+                            <span class="blog-date">01/20/2025 1:43:43 PM</span>
+                        </div>
+                        <div class="blog-content">
+                            <h3 class="blog-title">Top 5 sai lầm khiến bạn dễ bỏ cuộc khi ăn ...</h3>
+                            <p class="blog-excerpt">
+                                Bạn từng quyết tâm thay đổi thói quen ăn 
+                                uống, nhưng chỉ sau vài tuần là "buông và"? 
+                                Đừng vội trách b...
+                            </p>
+                            <a th:href="@{/blog/top-5-sai-lam}" class="blog-link">Đọc thêm →</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Commitment Section -->
+        <section class="commitment-section">
+            <div class="container">
+                <h2 class="section-title text-center">Cam kết chất lượng & dịch vụ</h2>
+                
+                <div class="commitment-grid">
+                    <div class="commitment-item">
+                        <div class="commitment-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 11l3 3L22 4"></path>
+                                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                            </svg>
+                        </div>
+                        <h4 class="commitment-title">Giao hàng toàn quốc</h4>
+                        <p class="commitment-desc">
+                            Nhận sạng kiểm tra trước khi thanh toán
+                        </p>
+                    </div>
+
+                    <div class="commitment-item">
+                        <div class="commitment-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <h4 class="commitment-title">Bảo đảm 100% hữu cơ</h4>
+                        <p class="commitment-desc">
+                            Hoàn tiền nếu không đúng chất lượng
+                        </p>
+                    </div>
+
+                    <div class="commitment-item">
+                        <div class="commitment-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="commitment-title">Đổi trả miễn phí</h4>
+                        <p class="commitment-desc">
+                            trong 7 ngày - Không hài lòng hoàn tiền
+                        </p>
+                    </div>
+
+                    <div class="commitment-item">
+                        <div class="commitment-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <h4 class="commitment-title">Tư vấn thực dưỡng</h4>
+                        <p class="commitment-desc">
+                            miễn phí - Hỗ trợ 24/7 từ chuyên gia
+                        </p>
+                    </div>
+
+                    <div class="commitment-item">
+                        <div class="commitment-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                            </svg>
+                        </div>
+                        <h4 class="commitment-title">Công dụng thực dưỡng</h4>
+                        <p class="commitment-desc">
+                            Chia sẻ kiến thức và công thức
+                        </p>
+                    </div>
+                </div>
+                
+                <p class="commitment-footer text-center">
+                    Nếp Nhà Xưa - Đồng hành cùng bạn trên hành trình xây dựng lối sống lành mạnh!
+                </p>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials-section">
+            <div class="container">
+                <h2 class="section-title text-center">Hơn 5.000 khách hàng tin tưởng Nếp Nhà Xưa</h2>
+                
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <img th:src="@{/images/avatar-1.jpg}" alt="Chị Minh Anh" class="testimonial-avatar">
+                            <div>
+                                <h5 class="testimonial-name">Chị Minh Anh</h5>
+                                <p class="testimonial-location">25 tuổi - Hà Nội</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="testimonial-content">
+                            Gạo lứt Nếp Nhà Xưa thực sự chất lượng, 
+                            cả gia đình tôi đều thích. Ăn thấy no lâu và 
+                            tiêu hóa rất dễ dàng hơn.
+                        </p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <img th:src="@{/images/avatar-2.jpg}" alt="Chú Văn Anh" class="testimonial-avatar">
+                            <div>
+                                <h5 class="testimonial-name">Chú Văn Anh</h5>
+                                <p class="testimonial-location">28 tuổi - TP HCM</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="testimonial-content">
+                            Bún lứt ăn rất ngon, dẻm dương cao mà 
+                            không gây tăng cân. Phù hợp với người tập 
+                            gym như tôi.
+                        </p>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-header">
+                            <img th:src="@{/images/avatar-3.jpg}" alt="Cô Lan Hương" class="testimonial-avatar">
+                            <div>
+                                <h5 class="testimonial-name">Cô Lan Hương</h5>
+                                <p class="testimonial-location">21 tuổi - Đà Nẵng</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="testimonial-content">
+                            Trà thảo mộc rất thơm và có tác dụng, 
+                            uống xong cảm thấy thư thái và ngủ ngon 
+                            hơn.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-5">
+                    <a th:href="@{/about}" class="btn btn-secondary">Tham gia cộng đồng Nếp Nhà Xưa</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <th:block layout:fragment="scripts">
+        <script th:src="@{/js/homepage.js}"></script>
+    </th:block>
+</body>
+</html>

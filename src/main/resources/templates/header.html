@@ -1,0 +1,145 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <header th:fragment="header" class="site-header">
+      <div class="header-container">
+        <a th:href="@{/}" class="brand">
+          <div class="logo-container">
+            <img
+              th:src="@{/images/logo-bg.svg}"
+              alt="Logo background"
+              class="logo-bg"
+            />
+            <img
+              th:src="@{/images/logo-fg.png}"
+              alt="Logo Nếp Nhà Xưa"
+              class="logo-fg"
+            />
+          </div>
+          <h1 class="brand-name">Nếp Nhà Xưa</h1>
+        </a>
+
+        <nav class="main-nav">
+          <ul>
+            <li>
+              <a
+                th:href="@{/products}"
+                th:classappend="${#request.requestURI.contains('/products') ? 'active' : ''}"
+                >Sản phẩm</a
+              >
+            </li>
+            <li>
+              <a
+                th:href="@{/blog}"
+                th:classappend="${#request.requestURI.contains('/blog') ? 'active' : ''}"
+                >Tin tức</a
+              >
+            </li>
+            <li>
+              <a
+                th:href="@{/about}"
+                th:classappend="${#request.requestURI.contains('/about') ? 'active' : ''}"
+                >Về chúng tôi</a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <div class="header-actions">
+          <a th:href="@{/cart}" aria-label="Giỏ hàng" class="cart-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path
+                d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+              ></path>
+            </svg>
+            <span
+              class="cart-count"
+              th:if="${cartItemCount > 0}"
+              th:text="${cartItemCount}"
+              >0</span
+            >
+          </a>
+          <a th:href="@{/login}" aria-label="Tài khoản" class="user-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </a>
+        </div>
+
+        <button
+          class="menu-toggle"
+          aria-label="Menu"
+          onclick="toggleMobileMenu()"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+          <button class="close-menu" onclick="toggleMobileMenu()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <nav>
+            <ul>
+              <li><a th:href="@{/products}">Sản phẩm</a></li>
+              <li><a th:href="@{/blog}">Tin tức</a></li>
+              <li><a th:href="@{/about}">Về chúng tôi</a></li>
+              <li><a th:href="@{/cart}">Giỏ hàng</a></li>
+              <li><a th:href="@{/login}">Đăng nhập</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+  </body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  lang="vi"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- SEO Meta Tags -->
+    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">
+      Nếp Nhà Xưa - Thực dưỡng thuần tự nhiên
+    </title>
+    <meta
+      name="description"
+      th:content="${pageDescription ?: 'Nếp Nhà Xưa - Cửa hàng thực phẩm thực dưỡng chất lượng cao, phù hợp với mọi nhu cầu dinh dưỡng của gia đình bạn'}"
+    />
+    <meta
+      name="keywords"
+      content="thực dưỡng, thực phẩm sạch, organic, hữu cơ, sức khỏe, dinh dưỡng"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" th:content="${#request.requestURL}" />
+    <meta
+      property="og:title"
+      th:content="${pageTitle ?: 'Nếp Nhà Xưa - Thực dưỡng thuần tự nhiên'}"
+    />
+    <meta
+      property="og:description"
+      th:content="${pageDescription ?: 'Cửa hàng thực phẩm thực dưỡng chất lượng cao'}"
+    />
+    <meta property="og:image" th:content="@{/images/og-image.jpg}" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" th:content="${#request.requestURL}" />
+    <meta property="twitter:title" th:content="${pageTitle ?: 'Nếp Nhà Xưa'}" />
+    <meta
+      property="twitter:description"
+      th:content="${pageDescription ?: 'Thực dưỡng thuần tự nhiên'}"
+    />
+    <meta property="twitter:image" th:content="@{/images/og-image.jpg}" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      th:href="@{/images/apple-touch-icon.png}"
+    />
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" th:href="@{/css/index.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+
+    <!-- Page Specific CSS -->
+    <th:block layout:fragment="styles"></th:block>
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <div th:replace="~{header :: header}"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" layout:fragment="content">
+      <!-- Page content will be inserted here -->
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="~{footer :: footer}"></div>
+
+    <!-- JavaScript Files -->
+    <script th:src="@{/js/index.js}"></script>
+
+    <!-- Page Specific JavaScript -->
+    <th:block layout:fragment="scripts"></th:block>
+
+    <!-- Global site data for JavaScript -->
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      window.NepNhaXuaConfig = {
+        baseUrl: /*[[@{/}]]*/ "/",
+        apiUrl: /*[[@{/api}]]*/ "/api",
+        cartItemCount: /*[[${cartItemCount ?: 0}]]*/ 0,
+        isAuthenticated: /*[[${#authentication != null && #authentication.principal != 'anonymousUser'}]]*/ false,
+        csrfToken: /*[[${_csrf?.token}]]*/ null,
+        csrfHeader: /*[[${_csrf?.headerName}]]*/ null,
+      };
+      /*]]>*/
+    </script>
+  </body>
+</html>
