@@ -150,24 +150,6 @@ mvn clean package
 java -jar target/thucduong-0.0.1-SNAPSHOT.jar
 ```
 
-## Environment Variables
-
-```properties
-# MongoDB
-MONGO_URI=mongodb://localhost:27017/thucduong
-
-# Redis
-REDIS_HOST=localhost
-REDIS_PORT=6379
-
-# JWT Secret
-JWT_SECRET=your-secret-key
-
-# Email
-MAIL_USERNAME=your-email@gmail.com
-MAIL_PASSWORD=your-app-password
-```
-
 ## Contributing
 
 1. Fork the repository

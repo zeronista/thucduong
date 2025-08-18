@@ -86,13 +86,14 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         return new MongoTemplate(mongoDbFactory, converter);
     }
 
-    @Bean
-    public MappingMongoConverter mappingMongoConverter(MongoDatabaseFactory factory,
-            MongoMappingContext context,
-            MongoCustomConversions conversions) {
-        DbRefResolver dbRefResolver = new DefaultDbRefResolver(factory);
-        MappingMongoConverter mappingConverter = new MappingMongoConverter(dbRefResolver, context);
-        mappingConverter.setCustomConversions(conversions);
+    @NotNull
+    @Override
+    public MappingMongoConverter mappingMongoConverter(@NotNull MongoDatabaseFactory databaseFactory,
+            @NotNull MongoCustomConversions customConversions,
+            @NotNull MongoMappingContext mappingContext) {
+        DbRefResolver dbRefResolver = new DefaultDbRefResolver(databaseFactory);
+        MappingMongoConverter mappingConverter = new MappingMongoConverter(dbRefResolver, mappingContext);
+        mappingConverter.setCustomConversions(customConversions);
 
         // Don't save _class to mongo documents
         mappingConverter.setTypeMapper(new DefaultMongoTypeMapper(null));

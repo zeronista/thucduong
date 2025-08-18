@@ -132,7 +132,7 @@ public class MongoIndexConfig {
                         .onField("description.short", 3F)
                         .onField("ingredients.name", 3F)
                         .onField("description.detailed", 1F)
-                        .withDefaultLanguage("vietnamese")
+                        .withDefaultLanguage("english")
                         .build());
         
         log.info("Product indexes created");
